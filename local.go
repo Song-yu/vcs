@@ -34,6 +34,7 @@ func (s *LocalRepo) LocalPath() string {
 }
 
 func (s *LocalRepo) Get() error {
+	s.run("rm", "-fr", s.LocalPath())
 	out, err := s.run("cp", "-fr", s.Remote(), s.LocalPath())
 
 	if err != nil && s.isUnableToCreateDir(err) {
@@ -64,6 +65,7 @@ func (s *LocalRepo) Init() error {
 }
 
 func (s *LocalRepo) Update() error {
+	s.Get()
 	return nil
 }
 
@@ -88,7 +90,7 @@ func (s *LocalRepo) CheckLocal() bool {
 }
 
 func (s *LocalRepo) Branches() ([]string, error) {
-	panic("implement me")
+	return nil, nil
 }
 
 func (s *LocalRepo) Tags() ([]string, error) {
@@ -96,7 +98,7 @@ func (s *LocalRepo) Tags() ([]string, error) {
 }
 
 func (s *LocalRepo) IsReference(string) bool {
-	panic("implement me")
+	return false
 }
 
 func (s *LocalRepo) IsDirty() bool {
@@ -123,7 +125,7 @@ func (s *LocalRepo) Ping() bool {
 }
 
 func (s *LocalRepo) ExportDir(dir string) error {
-	out, err := s.RunFromDir("rsync", "-rltvp","--delete","--exclude","vendor",
+	out, err := s.RunFromDir("rsync", "-rltp", "--delete", "--exclude", "vendor",
 		s.local+string(os.PathSeparator), dir)
 	s.log(out)
 	if err != nil {
