@@ -61,6 +61,7 @@ const (
 	Svn   Type = "svn"
 	Bzr   Type = "bzr"
 	Hg    Type = "hg"
+	Local    Type = "local"
 )
 
 // Repo provides an interface to work with repositories using different source
